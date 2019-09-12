@@ -16,4 +16,4 @@ def dataMaker(n, valuelength):
 
 
 # 每组数据10个，长度为10
-dataMaker(10, 10)
+dataMaker(10, 3000)

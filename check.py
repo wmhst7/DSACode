@@ -38,3 +38,5 @@ while True:
 		sys.stdout.write("Wrong\n")
 		break
 	sys.stdout.write("OK\n")
+#
+# python check.py ./A+B "python b.py" "python datamaker.py"
