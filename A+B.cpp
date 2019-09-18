@@ -10,7 +10,7 @@ long long *tem = new long long[10010];
 char *A = new char[5005];
 char *B = new char[5005];
 
-//大整数乘法
+//竖式大整数乘法
 void multi()
 {
     int lA = 0, lB = 0, t = 0;
@@ -20,12 +20,12 @@ void multi()
     memset(b, 0, 5005 * sizeof(int));
     for (int i = 5004; i > -1; --i)
     { //倒序存大数
-        if (A[i]<='9' && A[i] >= '0')
+        if (A[i] >= '0')
         {
             a[lA] = A[i] - '0';
             lA++;
         }
-        if (B[i]<='9' && B[i] >= '0')
+        if (B[i] >= '0')
         {
             b[lB] = B[i] - '0';
             lB++;

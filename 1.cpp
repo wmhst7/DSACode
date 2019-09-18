@@ -1,11 +1,7 @@
-#include <iostream>
-using namespace std;
-
-
-int main(){
-    char * ch = new char[20];
-    for(int i=0;i<5;i++)
-        ch[i] = 'a'+i;
-    printf("%s", ch);
-    return 0;
+#include <stdio.h>
+int main()
+{
+    double a = 25.0 - 1e-8;
+    double b = 200.0;
+    printf("%lf %lf %lf\n", a, b, a * b);
 }
