@@ -70,8 +70,7 @@ void Multiply()
         for (int j = 0; j < lb; j++)
         {
             c[j + i] += a[i] * b[j]; //按位乘积
-            t = c[j + i] / base;     //进位
-            c[j + i + 1] += t;       //进位
+            c[j + i + 1] += c[j + i] / base; //进位
             c[j + i] %= base;        //进位
         }
     }
