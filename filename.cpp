@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-#include <cmath>
 using namespace std;
-#define ll long long
+#define INF 0x3f3f3f3f
 int N, M, K;
-char A[5010010], B[5010010];
-int f[5010010][5010010];
+char A[501010], B[501010];
 int res;
+bool flag; //true->d is the first
+int *d, *p, *a, *b;
 
-int mmin(int a, int b, int c)
+int mmin(int a, int b, int c = INF)
 {
     int t = a < b ? a : b;
     return t < c ? t : c;
@@ -17,32 +17,73 @@ int mmin(int a, int b, int c)
 
 int main()
 {
+    a = new int[501010];
+    b = new int[501010]; //优化存储
     scanf("%d %d %d", &N, &M, &K);
     scanf("%s", A);
     scanf("%s", B);
-    for (int i = 0; i <= N; i++)
+    flag = true;
+    d = a;
+    p = b;
+    for (int i = 0; i <= M; i++)
     {
-        f[i][0] = i;
-    }
-    for (int j = 0; j <= M; j++)
-    {
-        f[0][j] = j;
+        d[i] = i;
     }
     for (int i = 1; i <= N; i++)
     {
-        for (int j = 1; j <= M; j++)
+        int lo = i - K - 1 < 0 ? 0 : i - K - 1;
+        int hi = i + K + 1 > M ? M : i + K + 1;
+        for (int j = lo; j <= hi; j++)
         {
-            if (A[i] == B[j])
+            if (flag)
             {
-                f[i][j] = mmin(f[i - 1][j - 1], f[i][j - 1], f[i - 1][j]);
+                d = a;
+                p = b;
             }
             else
             {
-                f[i][j] = mmin(f[i - 1][j - 1] + 2, f[i][j - 1] + 1, f[i - 1][j] + 1);
+                d = b;
+                p = a;
+            }
+            if (j == 0)
+            {
+                p[j] = i;
+                continue;
+            }
+            if (A[i - 1] == B[j - 1])
+            {
+                if (j == i - K - 1)
+                {
+                    p[j] = mmin(d[j] + 1, d[j - 1]);
+                }
+                else if (j == i + K + 1)
+                {
+                    p[j] = mmin(p[j - 1], d[j - 1] + 2);
+                }
+                else
+                {
+                    p[j] = mmin(p[j - 1] + 1, d[j] + 1, d[j - 1]);
+                }
+            }
+            else
+            {
+                if (j == i + K + 1)
+                {
+                    p[j] = mmin(p[j - 1], d[j - 1] + 2);
+                }
+                else if (j == i - K - 1)
+                {
+                    p[j] = mmin(d[j] + 1, d[j - 1]);
+                }
+                else
+                {
+                    p[j] = mmin(p[j - 1] + 1, d[j] + 1, d[j - 1] + 2);
+                }
             }
         }
+        flag = !flag;
     }
-    res = f[N][M] > K ? -1 : f[N][M];
-    printf("%d\n", res);
+    res = p[M] > K ? -1 : p[M];
+    cout << res << endl;
     return 0;
 }

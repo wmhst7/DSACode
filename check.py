@@ -39,4 +39,4 @@ while True:
 		break
 	sys.stdout.write("OK\n")
 #
-# python check.py ./AB "python b.py" "python datamaker.py"
+# python check.py ./filename ./Jump "python datamaker.py"

@@ -19,7 +19,7 @@ ll BinSearch(ll lo, ll hi)
     while (1 < hi - lo)
     {
         ll mi = (lo + hi) / 2;
-        if (x[mi] * yp + xp * y[mi] - x[mi] * y[mi] <= 0)
+        if (x[mi] * yp + xp * y[mi] - x[mi] * y[mi] < 0)
         {
             hi = mi;
         }
