@@ -1,6 +1,6 @@
-cout << "p: ";
-        for (int k = 0; k <= M; k++)
+cout << "queue: ";
+        for (int i = _head; i < _tail; i++)
         {
-            cout << "p["<<k<<"]="<<p[k] << '\t';
+            cout << elem[i] << ' ';
         }
         cout << endl;
