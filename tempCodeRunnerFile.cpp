@@ -1,6 +1,10 @@
-cout << "queue: ";
-        for (int i = _head; i < _tail; i++)
-        {
-            cout << elem[i] << ' ';
-        }
-        cout << endl;
+p = head;
+    // while(p->next != nullptr){
+    //     if(p->next->size == 0){
+    //         q = p->next;
+    //         p->next = q->next;
+    //         delete q;
+    //     }else{
+    //         p = p->next;
+    //     }
+    // }
