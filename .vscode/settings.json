@@ -3,5 +3,6 @@
         "iostream": "cpp",
         "list": "cpp",
         "__config": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

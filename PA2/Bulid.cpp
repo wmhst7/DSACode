@@ -122,18 +122,18 @@ public:
         size += node->size;
         TreeNode<T> *p = parent, *q = this;
         int tem = node->size;
-        while(p != nullptr){//更新祖先height,size
+        while(p != nullptr){//更新祖先height,size 有问题
             p->height = max(q->height+1, p->height);
             p->size+=tem;
             p = p->parent;
             q = q->parent;
         }
     }
-    TreeNode<T>* Remove(){//移除这个子树
+    TreeNode<T>* Remove(){//移除这个子树 
         TreeNode<T> *pa = this->parent, *p;
         this->parent = nullptr;
         pa->children.Remove(this);
-        //更新height,size
+        //更新height,size 有问题
         p = pa;
         int ds = size, temh;
         ListNode<TreeNode<int>*>* q;
@@ -209,12 +209,15 @@ void Preload(){
 
 int Search(){//读入并返回查找的节点的编号
     int tem = 0, pos = Root, num = 0;
+    bool f = false;
     cin>>num;
     while(num > 0){
         num--;
         cin>>tem;
-        if(tem < TreeNodes[pos].children.GetSize()){
+        if(tem < TreeNodes[pos].children.GetSize() && !f){
             pos = TreeNodes[pos].children[tem]->data;
+        }else{
+            f = true;
         }
     }
     return pos;
@@ -262,11 +265,13 @@ int main(){
         }
     }
     //DEBUG
+    #ifdef DEBUG
     for (int i = 1; i <= N; i++)
     {
         cout << i << " size = " << TreeNodes[i].size << ", height = " << TreeNodes[i].height;
         cout << ", Children: ";
         TreeNodes[i].children.Print();
     }
+    #endif
     return 0;
 }
