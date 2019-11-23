@@ -11,6 +11,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
+            //"program": "${fileDirname}/${fileBasenameNoExtension}",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,

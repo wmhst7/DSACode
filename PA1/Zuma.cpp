@@ -234,6 +234,7 @@ int main()
     scanf("%[^\n]", buffer);
     len = strlen(buffer);
     scanf("%d", &m);
+    return m;
     node *p = new node;
     head = p;
     for (int i = 0; i < len; i++)
@@ -252,6 +253,6 @@ int main()
         scanf("%d %c", &pos, &c);
         process(pos, c);
     }
-    Print();
-    return 0;
+    //Print();
+    return m;
 }

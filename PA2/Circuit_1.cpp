@@ -1,73 +1,23 @@
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <string>
 using namespace std;
 
-//Queue Implementaion Based in List Begin
-class QueueNode{
-public:
-    int data;
-    QueueNode * next;
-    QueueNode(int d):data(d){
-        next = nullptr;
-    }
-};
-class Queue{
-public:
-    QueueNode * head = nullptr;
-
-    void enqueue(int d){
-        if(head == nullptr){
-            head = new QueueNode(d);
-            return;
-        }
-        QueueNode * p = head;
-        while(p->next != nullptr){
-            p = p->next;
-        }
-        p->next = new QueueNode(d);
-        return;
-    }
-    int query(int num){
-        QueueNode * p = head;
-        if(head == nullptr){
-            return -1;
-        }
-        if(num == p->data && p->next != nullptr){
-            return p->next->data;
-        }
-        return p->data;
-    }
-    bool remove(){
-        if(head == nullptr) return true;
-        QueueNode * p = head;
-        head = head->next;
-        delete p;
-        if(head == nullptr) return true;
-        return false;
-    }
-};
-//Queue Implementaion End
-
-//
-
-
-#define MAXN 25000000
+#define MAXN 26000000
 #define MAXM 500005
-int K, N, cnt = 1, cntl = 1;
+int K, N, cnt = 1;
 int lc[MAXN], rc[MAXN];
-Queue queue[MAXM]; //叶节点对应的输出编号
-char ch[MAXM][64];
+char ch[MAXM][68];
 
 void insert(char str[], int p, int d, int n){
     //当前串，当前节点树编号,当前递归深度,当前串编号
     if(d == 64){//最深到第64层（0->64）
-        if(lc[p] == 0){
-            lc[p] = cntl;
-            cntl++;
+        while(lc[p] != 0){
+            p = lc[p];
         }
-        queue[lc[p]].enqueue(n);
+        lc[p] = ++cnt;
+        rc[p] = n;
         return;
     }
     if(str[d] == '0'){
@@ -82,9 +32,12 @@ void insert(char str[], int p, int d, int n){
 
 void remove(char str[], int p, int d, int f){ 
     //str,当前节点编号，当前深度，父亲的编号
-    if(d == 64){  
-        if(queue[lc[p]].remove()){
-            lc[p] = 0;
+    if(d == 64){
+        int q = lc[p];
+        if(q == 0) return;
+        lc[p] = lc[q];
+        rc[p] = rc[q];
+        if(lc[p] == 0){
             if(lc[f] == p) lc[f] = 0;
             if(rc[f] == p) rc[f] = 0;
         }
@@ -105,7 +58,11 @@ void remove(char str[], int p, int d, int f){
 int query(char str[], int p, int d, int n){
     //Base
     if(d == 64){
-        return queue[lc[p]].query(n);
+        if(rc[p] == n){
+            return rc[lc[p]];
+        }else{
+            return rc[p];
+        }
     }
     if(str[d] == '0'){
         if(rc[p] > 0){
@@ -124,13 +81,9 @@ int query(char str[], int p, int d, int n){
 
 void run(){
     int a, b;
-    char * buffer = new char[100];
     scanf("%d %d\n", &N, &K);
     for(int i = 0;i < N;i++){//预处理
-        cin.getline(buffer, 100);
-        for(int j = 0;j<64;j++){
-            ch[i][j] = buffer[j];
-        }
+        scanf("%s", ch[i]);
     }
     for(int i = 0;i <= K + 1;i++){
         if(i >= N) continue;
@@ -148,11 +101,7 @@ void run(){
 }
 
 int main(){
-    clock_t start, end;
-    start = clock();
     run();
-    end = clock();
-    cout<<"Run time: "<<(double)(end - start) / CLOCKS_PER_SEC<<"S"<<endl;
     return 0;
 }
 

@@ -4,9 +4,8 @@
 #include <string>
 #include "Vector.h"
 using namespace std;
-//#define DEBUG
-#define MAXM 400000+5
-#define MAXN 200000+5
+#define MAXM 200010
+#define MAXN 220000
 
 int n, m;//vertex, edge
 int low[MAXN], dfn[MAXN], vis[MAXN];//Tarjan
@@ -33,25 +32,15 @@ void Tarjan(int u, int f){
         if(vis[v]){
             if(f != v) low[u] = min(low[u], dfn[v]);
         }else{
-            //father[v] = u;
             Tarjan(v, u);
             if(low[v] < dfn[u]){
                 low[u] = min(low[u], low[v]);
             }else{
-                #ifdef DEBUG
-                cout << "BCC(" << bcc + 1 << "): ";
-                #endif
                 bcc++;
                 do{
-                    #ifdef DEBUG
-                    cout<<stack[top]<<' ';
-                    #endif
                     fa[stack[top]] = bcc;
                 }while(stack[top--] != v);
                 fa[u] = bcc;
-                #ifdef DEBUG
-                cout<<u<<endl;
-                #endif
             }
         }
         vis[v] = 1;
@@ -62,16 +51,13 @@ void compress(){
     for(int u = 1;u <= n;u++){
         for(int i=0;i<edge[u].size();i++){
             int v = edge[u][i];
-            if(fa[u] != fa[v])
+            if(fa[u] != fa[v]){
                 bccedge[fa[u]].push_back(fa[v]);
+            }
         }
     }
     for(int i = 1;i<=bcc;i++){
         bccedge[i].deduplicate();
-        #ifdef DEBUG
-        cout<<i<<": ";
-        bccedge[i].print();
-        #endif
     }
 }
 
@@ -94,23 +80,11 @@ void solve(){
         fa[1] = ++bcc;
         ori[fa[1]] = 1;
     }
-    #ifdef DEBUG
-    cout<<"DEBUG:\n";
-    for(int i=1;i<=n;i++){
-        cout<<"i: "<<i
-        <<" dfn: "<<dfn[i]
-        <<" low: "<<low[i]
-        <<" father: "<<father[i]
-        << " bcc: "<<fa[i];
-        if(cut[i]) cout<<" CUT ";
-        cout<<endl;
-    }
-    #endif
     //建新树
     compress();
 }
 
-void bfs(int s, int t){
+void bfs(int s, int t){//最短路径
     int v, head=0, tail=0;
     stack[tail++] = s;
     father[s] = s;
@@ -155,8 +129,7 @@ void query(int s, int t){
     printf("\n");
 }
 
-int main()
-{
+int main(){
     scanf("%d %d", &n, &m);
     int u, v;
     for(int i=1;i<=m;i++){

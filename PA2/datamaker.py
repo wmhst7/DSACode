@@ -20,12 +20,15 @@ import random
 import string
 
 def dataMaker(n, k):
+    
     f = sys.stdout
     f.write('{} {}\n'.format(n,k))
     for i in range(0,int(n)):
-        for j in range(0,64):
+        f.write('1101100011111101111001001000010101111111001101100000010101111')
+        for j in range(0,3):
             f.write(str(random.randint(0, 1)))
         f.write(' \n')
+    f.close()
 
-dataMaker(10, 3)
+dataMaker(10, 2)
 

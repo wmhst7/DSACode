@@ -3,27 +3,13 @@
 #include <cstring>
 #include <string>
 using namespace std;
-#define MAXN 1000000+5
-#define MAXM 10000+5
-//#define DEBUG
+#define MAXN 3000000
 int N, M;
 int lc[MAXN], rc[MAXN], father[MAXN];
 int height[MAXN];//此节点及其弟弟高度的最大值
 int size_sum[MAXN];//此节点及其弟弟规模的和
 int queue[MAXN];
 int head, tail;
-
-void Print(){
-    for(int i=0;i<=N;i++){
-        cout<<"i = "<<i
-        <<" lc = "<<lc[i]
-        <<" rc = "<<rc[i]
-        <<" father = "<<father[i]
-        <<" h = "<<height[i]
-        <<" s = "<<size_sum[i]
-        <<" queue = "<<queue[i]<<endl;
-    }
-}
 
 void Initial(){//初始化h,s
     head = 0;
@@ -50,9 +36,6 @@ void Initial(){//初始化h,s
         height[i] = max(height[rc[i]], height[lc[i]] + 1);
         size_sum[i] = size_sum[rc[i]] + size_sum[lc[i]] + 1;
     }
-    #ifdef DEBUG
-    Print();
-    #endif
 }
 
 void Create(){
@@ -101,9 +84,6 @@ int Search(){
             end = true;
         }
     }
-    #ifdef DEBUG
-    cout<<"Search: "<<pos<<endl;
-    #endif
     return pos;
 }
 

@@ -39,4 +39,4 @@ while True:
 		break
 	sys.stdout.write("OK\n")
 #
-# python3 check.py ./Circuit "python3 Circuit.py" "python3 datamaker.py"
+# python3 check.py ./Circuit_1 "python3 Circuit.py" "python3 datamaker.py"

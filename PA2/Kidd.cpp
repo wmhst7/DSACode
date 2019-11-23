@@ -72,9 +72,7 @@ ll query(ll L, ll R, ll l, ll r, ll pos)
 
 int main()
 {
-    //ios::sync_with_stdio(false);
     scanf("%d %d\n", &N, &M);
-    //cin >> N >> M;
     char ch;
     ll a, b;
     for (int i = 0; i < M; i++)
