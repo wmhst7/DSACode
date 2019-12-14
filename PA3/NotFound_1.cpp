@@ -1,9 +1,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
 using namespace std;
-#define MAXN 20000000
+#define MAXN 17000000
 #define getbit(x, y) ((x) >> (y) & 1)
 
 class Bitmap{
@@ -25,55 +24,57 @@ class Bitmap{
     int test(int k){
         return (M[k>>3] & (0x80 >> (k & 0x07))) ? 1 : 0;
     }
+    void clean(int n=MAXN){
+        memset(M, 0, (n+7)/8);
+    }
 };
 
 int l;
 Bitmap bitmap1, bitmap2;
-int str[30];
 
 void bi_print(int num, int wid){
-    for(int i=0;i<wid;i++){
-        printf("%d",str[i]);
+    wid--;
+    for(;wid>=0;wid--){
+        printf("%d", getbit(num, wid));
     }
     printf("\n");
 }
 
-bool check(int num, int wid){
-    for(int i=wid-1;i>=0;i--){
-        if(getbit(num, i)) str[wid - i - 1] = 1;
-        else str[wid - i - 1] = 0;
-    }
-    bool f;
+void scan(int wid){
+    bitmap2.clean(1<<wid);
+    int t = 0;
     for(int i=0;i<=l-wid;i++){
-        f = true;
+        t = 0;
         for(int j=0;j<wid;j++){
-            if(str[j] != bitmap1.test(i+j)){
-                f = false;
-                break;
+            if(bitmap1.test(i+j)){
+                t += (1 << (wid - j - 1));
             }
         }
-        if(f){//存在此子串
-            return false;
-        }
+        bitmap2.set(t);
     }
-    return true;
+}
+
+
+
+inline char nc(){
+    static const int n = 100000;
+    static char buf[n], *p1 = buf, *p2 = buf;
+    return p1 == p2 && (p2 = (p1 = buf)+fread(buf, 1, n, stdin), p1 == p2) ? EOF : *p1++;
 }
 
 int main(){
-    setvbuf(stdin, new char[1 << 20], _IOFBF, 1 << 20);
-    setvbuf(stdout, new char[1 << 20], _IOFBF, 1 << 20);
     char ch;
     l = 0;
     do{
-        ch = getchar();
+        ch = nc();
         if(ch == '1') bitmap1.set(l);
         l++;
-    }while(ch == '0' || ch == '1');
+    }while(ch != '\n');
     l--;
-    
     for(int wid=1;wid <= 24;wid++){
-        for(int num = 0; num < (1<<wid);num++){
-            if(check(num, wid)){
+        scan(wid);
+        for(int num = 0;num < (1 << wid);num++){
+            if(!bitmap2.test(num)){
                 bi_print(num, wid);
                 return 0;
             }
