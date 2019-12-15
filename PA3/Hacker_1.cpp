@@ -81,7 +81,7 @@ class HashTable
 {
     //key -> CRC32(uint), value -> password(int)
 private:
-    int Size = 4000000; //length
+    int Size = 10000000; //length
     HashItem **table;
     int hash(uint key)
     {
@@ -247,11 +247,11 @@ int main()
         {
             if (buffer[j] < 60)
             {
-                password += (1u << ((7 - j) * 4)) * (buffer[j] - '0');
+                password |= ((buffer[j] - '0') << (28 - 4 * j));
             }
             else
             {
-                password += (1u << ((7 - j) * 4)) * (buffer[j] - 'a' + 10);
+                password |= ((buffer[j] - 'a' + 10) << (28 - 4 * j));
             }
         }
         query(password);

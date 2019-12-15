@@ -5,6 +5,7 @@ using namespace std;
 #define MAXN 17000000
 #define getbit(x, y) ((x) >> (y) & 1)
 
+
 class Bitmap{
     private:
     int N;
@@ -42,22 +43,30 @@ void bi_print(int num, int wid){
 
 void scan(int wid){
     bitmap2.clean(1<<wid);
-    int t = 0;
-    for(int i=0;i<=l-wid;i++){
-        t = 0;
-        for(int j=0;j<wid;j++){
-            if(bitmap1.test(i+j)){
-                t += (1 << (wid - j - 1));
-            }
+    int t = 0, cnt = 0;
+    for(int j=0;j<wid;j++){
+        if(bitmap1.test(j)){
+            t |= (1 << (wid - j - 1));
         }
-        bitmap2.set(t);
+    }
+    cnt++;
+    bitmap2.set(t);
+    for(int i=1;i<=l-wid;i++){
+        t <<= 1;
+        t &= ~(1 << wid);
+        t += bitmap1.test(i + wid - 1);
+        if(!bitmap2.test(t)){
+            bitmap2.set(t);
+            cnt++;
+        }
+        if(cnt >= (1 << wid)){
+            return;
+        }
     }
 }
 
-
-
 inline char nc(){
-    static const int n = 100000;
+    static const int n = 1024;
     static char buf[n], *p1 = buf, *p2 = buf;
     return p1 == p2 && (p2 = (p1 = buf)+fread(buf, 1, n, stdin), p1 == p2) ? EOF : *p1++;
 }
