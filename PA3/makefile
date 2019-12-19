@@ -1,2 +1,2 @@
-all:Hacker.cpp crc32.cpp
-	g++ -std=c++14 -g Hacker_1.cpp crc32.cpp -o Hacker_1 && ./Hacker_1
+all:sort_lib.cpp Sort.cpp
+	g++ sort_lib.cpp Sort.cpp -std=c++11 -O2 -o Sort && ./Sort

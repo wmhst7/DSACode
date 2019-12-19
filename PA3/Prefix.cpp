@@ -24,6 +24,7 @@ void buildNext(){
     }
 }
 
+
 inline char nc(){
     static const int _N = 120000;
     static char buf[_N], *p1 = buf, *p2 = buf;
