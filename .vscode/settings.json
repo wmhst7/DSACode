@@ -5,6 +5,6 @@
         "__config": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
-    "python.pythonPath": "/anaconda3/bin/python",
+    "python.pythonPath": "/Users/wmhst7/anaconda3/bin/python",
     "workbench.editor.enablePreview": false
 }

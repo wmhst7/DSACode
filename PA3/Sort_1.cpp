@@ -4,8 +4,12 @@
 #include <iostream>
 int buff[1000010];
 using namespace std;
+#define _MIN -1
+#define _MAX -2
 
 bool comp(int x, int y){ // x < y 
+	if(x == _MIN || y == _MAX) return true;
+	if(y == _MIN || x == _MAX) return false;
 	int max, min;
 	compare(x, y, y, &max, &min);
 	return max == y;
@@ -18,44 +22,54 @@ inline void swap(int &a, int &b){
 
 class LoserTree_4{
 private:
-	int data[5];
+	int ls[5], data[5];
     int p[4], end[4];
-	int dmax = -1;
+	void adjust(int i){
+        //printf("adjust(%d)\n", i);
+		int f = (i + 4) >> 1;
+        // while(f > 0){
+        //     if(comp(data[ls[f]], data[i])){ // f < i 
+        //         swap(i, ls[f]);
+        //     }
+        //     f /= 2;
+        // }
+        // ls[0] = i;
+		
+	}
 public:
     void build(int L, int ml, int m, int mr, int R){
         p[0] = L, p[1] = ml+1, p[2] = m + 1, p[3] = mr + 1;
         end[0] = ml, end[1] = m, end[2] = mr, end[3] = R;
         for(int i = 0;i < 4;i++){
+            ls[i] = 4;
             data[i] = buff[p[i]];
             p[i]++;
         }
+        data[4] = _MIN;
+        for(int i = 3;i >= 0;i--){
+            adjust(i);
+        }
+        //print();
+    }
+    void print(){
+        for (int i = 0; i < 4; i++)
+        {
+            printf("%d: ls = %d, data = %d\n", i, ls[i], data[i]);
+        }
     }
     int get(){
-		
-        // int max, min;
-		// if(dmax == -1){
-		// 	compare(data[0], data[1], data[2], &max, &min);
-		// 	int _dmax = 0;
-		// 	for(int i=0;i<3;i++) 
-		// 		if(data[i] == max) _dmax = i;
-		// 	if(comp(data[3], max)) dmax = 3;
-		// 	else dmax = _dmax;
-		// }
-		// int d[4];
-		// int cnt = 0, _dmin = 0;
-		// for(int i = 0;i < 4;i++){
-		// 	if(data[i] != dmax) d[cnt++] =i;
-		// }
-		// compare(data[d[0]], data[d[1]], data[d[2]], &max, &min);
-		// for(int i=0;i<4;i++)
-		// 	if(min == data[i]) _dmin = i;
-		// if(p[_dmin] <= end[_dmin]){
-		// 	data[_dmin] = buff[p[_dmin]++];
-		// }else{
-		// 	data[_dmin] = -1;
-		// }
-		// return min;
-		
+        int i = ls[0];
+        int res = data[i];
+        //printf("\nget: %d\n", res);
+        //print(); 
+        if(p[i] <= end[i]){
+            data[i] = buff[p[i]];
+            p[i]++;
+        }else{
+            data[i] = _MAX;
+        }
+        adjust(i);
+        return res;
     }
 }tt;
 

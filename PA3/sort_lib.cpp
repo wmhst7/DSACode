@@ -58,6 +58,7 @@ int main() {
 			exit(0);
 		}
 		if (A[res[i]] != i) {
+			
 			printf("Wrong Answer --- not sorted\n");
 			exit(0);
 		}
