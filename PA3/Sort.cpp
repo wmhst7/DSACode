@@ -1,7 +1,6 @@
 #include "sort.h"
 #include <cstdlib>
 #include <cstdio>
-#include <iostream>
 int buff[1000010];
 using namespace std;
 
@@ -29,38 +28,75 @@ public:
             data[i] = buff[p[i]];
             p[i]++;
         }
+		dmax = -1;
     }
+	void initial(){
+		int max, min;
+		compare(data[0], data[1], data[2], &max, &min);
+		dmax = comp(max, data[3]) ? data[3] : max;
+	}
+	void print(){
+        for (int i = 0; i < 4; i++)
+        {
+            printf("data[%d] = %d\n", i, data[i]);
+        }
+    }
+	void compare_(int a, int b, int c, int * ma, int * mi){
+		if(a == -1){
+			if(b == -1){
+				b = c; a = c;
+			}else{
+				a = b;
+				if(c == -1) c = b;
+			}
+		}else{
+			if(b == -1) b = a;
+			if(c == -1) c = a;
+		}
+		if(a == b && b == c){
+			*ma = a; *mi = a;
+			return;
+		}
+		compare(a, b, c, ma, mi);
+	}
     int get(){
-		
-        // int max, min;
-		// if(dmax == -1){
-		// 	compare(data[0], data[1], data[2], &max, &min);
-		// 	int _dmax = 0;
-		// 	for(int i=0;i<3;i++) 
-		// 		if(data[i] == max) _dmax = i;
-		// 	if(comp(data[3], max)) dmax = 3;
-		// 	else dmax = _dmax;
-		// }
-		// int d[4];
-		// int cnt = 0, _dmin = 0;
-		// for(int i = 0;i < 4;i++){
-		// 	if(data[i] != dmax) d[cnt++] =i;
-		// }
-		// compare(data[d[0]], data[d[1]], data[d[2]], &max, &min);
-		// for(int i=0;i<4;i++)
-		// 	if(min == data[i]) _dmin = i;
-		// if(p[_dmin] <= end[_dmin]){
-		// 	data[_dmin] = buff[p[_dmin]++];
-		// }else{
-		// 	data[_dmin] = -1;
-		// }
-		// return min;
-		
+		if(dmax == -1){
+			initial();
+		}
+		int max, min;
+		int temp[4], cnt = 0;
+		if(dmax == -2){
+			for(int i=0;i<3;i++){
+				if(data[i] != -1){
+					temp[cnt++] = i;
+				}else{
+					temp[cnt++] = 3;
+				}
+			}
+		}else{
+			for(int i=0;i<4;i++){
+				if(dmax != data[i]){
+					temp[cnt++] = i;
+				}
+			}
+		}
+		compare_(data[temp[0]], data[temp[1]], data[temp[2]], &max, &min);
+		dmax = max;
+		for(int i=0;i<4;i++){
+			if(data[i] == -1) dmax = -2;
+			if(min == data[i]){
+				if(p[i] <= end[i]){
+					data[i] = buff[p[i]++];
+				}else{
+					data[i] = -1;
+				}
+			}
+		}
+		return min;
     }
 }tt;
 
 inline void merge_2(int * a, int l, int r){
-	//printf("merge_2(%d, %d)\n", l, r);
 	int max, min;
 	compare(a[l], a[l], a[r], &max, &min);
 	a[l] = min, a[r] = max;
@@ -68,7 +104,6 @@ inline void merge_2(int * a, int l, int r){
 }
 
 inline void merge_3(int * a, int l, int m, int r){
-	//printf("merge_3(%d, %d, %d)\n", l , m, r);
 	int max, min;
 	compare(a[l], a[m], a[r], &max, &min);
 	int mid = a[l] + a[m] + a[r] - max - min;
@@ -77,7 +112,6 @@ inline void merge_3(int * a, int l, int m, int r){
 }
 
 void merge_4(int * a, int L, int ml, int m, int mr, int R){
-	//printf("merge_4(%d, %d, %d, %d, %d)\n", L, ml, m, mr, R);
 	//[L, ml], [ml + 1, m], [m + 1, mr], [mr + 1, R]
 	for(int i = L;i <= R;i++) buff[i] = a[i];
     tt.build(L, ml, m, mr, R);
@@ -88,7 +122,6 @@ void merge_4(int * a, int L, int ml, int m, int mr, int R){
 }
 
 void mergesort(int * a, int L, int R){
-	//printf("mergesort(%d, %d)\n", L, R);
 	if(L == R){
 		return;
 	}else if(R - L == 1){
